@@ -9,10 +9,10 @@ class Extract:
         self.endpoint_players = "nba/scores/json/Players"
         self.endpoint_stadiums = "nba/scores/json/Stadiums"
         self.endpoint_teams = "nba/scores/json/teams"
-        self.teams = ["/WAS", "/CHA", "/ATL", "/MIA", "/ORL", "/NY", "/PHI", "/BKN", "/BOS",
-                      "/TOR", "/CHI", "/CLE", "/IND", "/DET", "/MIL", "/MIN", "/UTA", "/OKC",
-                      "/POR", "/DEN", "/MEM", "/HOU", "/NO", "/SA", "/DAL", "/GS", "/LAL", "/LAC",
-                      "/PHO", "/SAC"]
+        self.teams = ["WAS", "CHA", "ATL", "MIA", "ORL", "NY", "PHI", "BKN", "BOS",
+                      "TOR", "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC",
+                      "POR", "DEN", "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC",
+                      "PHO", "SAC"]
 
     def get_teams(self):
         """
@@ -26,7 +26,7 @@ class Extract:
             None
 
         :return:
-            dict: The JSON response containing team data.
+            list: The JSON response containing team data.
         """
         url = self.ENDPOINT_MAIN + self.endpoint_teams
         params = {'key': self.API_KEY}
@@ -45,9 +45,33 @@ class Extract:
             None
 
         :return:
-            dict: The JSON response containing stadium data.
+            list: The JSON response containing stadium data.
         """
         url = self.ENDPOINT_MAIN + self.endpoint_stadiums
         params = {'key': self.API_KEY}
         response = requests.get(url=url, params=params)
         return response.json()
+
+    def get_players(self):
+        """
+        Retrieves players data from players endpoint.
+
+        This function constructs URL using the base endpoint, the players-specific
+        endpoint and the team specific shortcut. It also uses for loop to get all players for each team.
+        Then sends a GET request with the API key as a parameter.
+        It returns the data in JSON format and then put into dict.
+
+        :param:
+            None
+
+        :return:
+            dict: The JSON response containing players data for each team.
+        """
+        all_players = {}
+        for team in self.teams:
+            url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
+            params = {'key': self.API_KEY}
+            response = requests.get(url=url, params=params)
+            all_players[team] = response.json()
+
+        return all_players
