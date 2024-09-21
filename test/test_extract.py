@@ -47,3 +47,26 @@ class TestExtractFunctions(unittest.TestCase):
         result = extract.get_stadiums()
 
         self.assertEqual(result, mock_response)
+
+    @patch('requests.get')
+    def test_get_players(self, mock_get):
+        """
+        Tests the get_players method to ensure it correctly fetches team data from the API.
+
+        Mocks the requests.get call to simulate an API response and verifies that the
+        get_players method returns the expected data without making an actual API call.
+
+        :param mock_get:
+            A mock object that simulates the requests.get method.
+        """
+        mock_response = {'players': []}
+
+        mock_get.return_value = Mock(status_code=200)
+        mock_get.return_value.json.return_value = mock_response
+
+        extract = Extract()
+        result = extract.get_players()
+
+        for team in extract.teams:
+            self.assertEqual(result[team], mock_response)
+
