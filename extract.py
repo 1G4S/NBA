@@ -22,13 +22,32 @@ class Extract:
         endpoint, then sends a GET request with the API key as a parameter. It returns
         the data in JSON format.
 
-        Params:
+        :param:
             None
 
-        Returns:
+        :return:
             dict: The JSON response containing team data.
         """
         url = self.ENDPOINT_MAIN + self.endpoint_teams
+        params = {'key': self.API_KEY}
+        response = requests.get(url=url, params=params)
+        return response.json()
+
+    def get_stadiums(self):
+        """
+        Retrieves stadium data from stadium endpoint.
+
+        This function constructs URL using the base endpoint and the stadium-specific
+        endpoint, then sends a GET request with the API key as a parameter. It returns
+        the data in JSON format.
+
+        :param:
+            None
+
+        :return:
+            dict: The JSON response containing stadium data.
+        """
+        url = self.ENDPOINT_MAIN + self.endpoint_stadiums
         params = {'key': self.API_KEY}
         response = requests.get(url=url, params=params)
         return response.json()
