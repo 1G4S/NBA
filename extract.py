@@ -1,6 +1,7 @@
 import json
 
 import requests
+from requests import RequestException
 
 
 class Extract:
@@ -20,7 +21,7 @@ class Extract:
 
         This function constructs a URL using the base endpoint and the teams-specific
         endpoint, then sends a GET request with the API key as a parameter. It returns
-        the data in JSON format.
+        the data in JSON format if request is successful, if not, None will be returned.
 
         :param:
             None
@@ -30,8 +31,13 @@ class Extract:
         """
         url = self.ENDPOINT_MAIN + self.endpoint_teams
         params = {'key': self.API_KEY}
-        response = requests.get(url=url, params=params)
-        return response.json()
+        try:
+            response = requests.get(url=url, params=params)
+            response.raise_for_status()
+            return response.json()
+        except RequestException as e:
+            print(f"Error fetching teams data: {e}")
+            return None
 
     def get_stadiums(self):
         """
@@ -39,7 +45,7 @@ class Extract:
 
         This function constructs URL using the base endpoint and the stadium-specific
         endpoint, then sends a GET request with the API key as a parameter. It returns
-        the data in JSON format.
+        the data in JSON format if the request is successful, if not there will be None returned.
 
         :param:
             None
@@ -49,17 +55,24 @@ class Extract:
         """
         url = self.ENDPOINT_MAIN + self.endpoint_stadiums
         params = {'key': self.API_KEY}
-        response = requests.get(url=url, params=params)
-        return response.json()
+        try:
+            response = requests.get(url=url, params=params)
+            response.raise_for_status()
+            return response.json()
+        except RequestException as e:
+            print(f"Error fetching stadium data: {e}")
+            return None
 
     def get_players(self):
         """
         Retrieves players data from players endpoint.
 
-        This function constructs URL using the base endpoint, the players-specific
-        endpoint and the team specific shortcut. It also uses for loop to get all players for each team.
-        Then sends a GET request with the API key as a parameter.
-        It returns the data in JSON format and then put into dict.
+        This function constructs the URL by combining the base endpoint, the players-specific
+        endpoint, and the team-specific shortcut for each team. It uses a for loop to send a GET request
+        for each team with the API key as a parameter and collects the players' data.
+        If a request is successful, the JSON response is parsed and added to a dictionary
+        with the team name as the key. In case of a request or JSON parsing error,
+        the team entry will have a value of None.
 
         :param:
             None
@@ -71,8 +84,14 @@ class Extract:
         for team in self.get_list_of_teams():
             url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
             params = {'key': self.API_KEY}
-            response = self.session.get(url=url, params=params)
-            all_players[team] = response.json()
+            try:
+                response = self.session.get(url=url, params=params)
+                response.raise_for_status()
+                all_players[team] = response.json()
+
+            except RequestException as e:
+                print(f"Error fetching fata for {team}: {e}")
+                all_players[team] = None
 
         return all_players
 
@@ -81,10 +100,14 @@ class Extract:
         Get list of teams from json file.
 
         This function read data from json file and returns list of teams
-        from NBA.
+        from NBA, if loading data is successful, if not, None will be returned.
         :return:
             list: List of teams from NBA.
         """
-        with open(self.filename, 'r') as file:
-            data = json.load(file)
-        return data['Teams']
+        try:
+            with open(self.filename, 'r') as file:
+                data = json.load(file)
+                return data['Teams']
+        except Exception as e:
+            print(e)
+            return None
