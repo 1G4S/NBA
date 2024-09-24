@@ -71,6 +71,12 @@ class TestExtractFunctions(unittest.TestCase):
             self.assertEqual(result[team], mock_response)
 
     def test_get_list_of_teams(self):
+        """
+        Tests get_list_of_teams function to ensure its correctly fetch teams from json file.
+
+        Check the result that we want with what function returns.
+
+        """
         response = ["WAS", "CHA", "ATL", "MIA", "ORL", "NY", "PHI", "BKN", "BOS", "TOR",
                     "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC", "POR", "DEN",
                     "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC", "PHO", "SAC"]
