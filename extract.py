@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 
@@ -9,10 +11,8 @@ class Extract:
         self.endpoint_players = "nba/scores/json/Players"
         self.endpoint_stadiums = "nba/scores/json/Stadiums"
         self.endpoint_teams = "nba/scores/json/teams"
-        self.teams = ["WAS", "CHA", "ATL", "MIA", "ORL", "NY", "PHI", "BKN", "BOS",
-                      "TOR", "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC",
-                      "POR", "DEN", "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC",
-                      "PHO", "SAC"]
+        self.filename = 'teams.json'
+        self.session = requests.Session()
 
     def get_teams(self):
         """
@@ -68,10 +68,23 @@ class Extract:
             dict: The JSON response containing players data for each team.
         """
         all_players = {}
-        for team in self.teams:
+        for team in self.get_list_of_teams():
             url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
             params = {'key': self.API_KEY}
-            response = requests.get(url=url, params=params)
+            response = self.session.get(url=url, params=params)
             all_players[team] = response.json()
 
         return all_players
+
+    def get_list_of_teams(self):
+        """
+        Get list of teams from json file.
+
+        This function read data from json file and returns list of teams
+        from NBA.
+        :return:
+            list: List of teams from NBA.
+        """
+        with open(self.filename, 'r') as file:
+            data = json.load(file)
+        return data['Teams']
