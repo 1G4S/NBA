@@ -67,8 +67,7 @@ class TestExtractFunctions(unittest.TestCase):
         extract = Extract()
         result = extract.get_players()
 
-        for team in extract.get_list_of_teams():
-            self.assertEqual(result[team], mock_response)
+        self.assertEqual(result, mock_response)
 
     def test_get_list_of_teams(self):
         """

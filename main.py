@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import json
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
+import pandas as pd
+from extract import Extract
+from pprint import pprint
 
+from transform import Transform, StadiumsStrategy, TeamsStrategy, PlayersStrategy
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+# extract = Extract()
+# pprint(extract.get_players())
+# pprint(extract.get_players()["CHA"])
+# pprint(extract.get_stadiums())
+# pprint(extract.get_teams())
+# pprint(extract.get_players())
+# stadiums = extract.get_stadiums()
+# st = pd.DataFrame(stadiums)
+# transform = Transform()
+# pprint(transform.remove_columns(st, "Address", "GeoLat", "GeoLong", "Zip"))
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# stadium_strategy = StadiumsStrategy()
+# team_strategy = TeamsStrategy()
+player_strategy = PlayersStrategy()
+transform = Transform(player_strategy)
+pprint(transform.get_clean_data())

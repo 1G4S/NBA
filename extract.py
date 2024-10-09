@@ -70,28 +70,28 @@ class Extract:
         This function constructs the URL by combining the base endpoint, the players-specific
         endpoint, and the team-specific shortcut for each team. It uses a for loop to send a GET request
         for each team with the API key as a parameter and collects the players' data.
-        If a request is successful, the JSON response is parsed and added to a dictionary
-        with the team name as the key. In case of a request or JSON parsing error,
+        If a request is successful, the JSON response is parsed and added to a list.
+        In case of a request or JSON parsing error,
         the team entry will have a value of None.
 
         :param:
             None
 
         :return:
-            dict: The JSON response containing players data for each team.
+            list: The JSON response containing players data for each team.
         """
-        all_players = {}
+        all_players = []
         for team in self.get_list_of_teams():
             url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
             params = {'key': self.API_KEY}
             try:
                 response = self.session.get(url=url, params=params)
                 response.raise_for_status()
-                all_players[team] = response.json()
+                all_players.extend(response.json())
 
             except RequestException as e:
                 print(f"Error fetching fata for {team}: {e}")
-                all_players[team] = None
+                all_players = None
 
         return all_players
 
