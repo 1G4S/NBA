@@ -22,7 +22,7 @@ class TestExtractFunctions(unittest.TestCase):
         mock_get.return_value = Mock(status_code=200)
         mock_get.return_value.json.return_value = mock_response
 
-        extract = Extract()
+        extract = Extract(filename="../teams.json")
         result = extract.get_teams()
 
         self.assertEqual(result, mock_response)

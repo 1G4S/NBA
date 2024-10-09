@@ -6,13 +6,13 @@ from requests import RequestException
 
 class Extract:
 
-    def __init__(self):
+    def __init__(self, filename='teams.json'):
         self.API_KEY = "508f3dee654d4f5b8b06b9fe48bbb51e"
         self.ENDPOINT_MAIN = "https://api.sportsdata.io/v3/"
         self.endpoint_players = "nba/scores/json/Players"
         self.endpoint_stadiums = "nba/scores/json/Stadiums"
         self.endpoint_teams = "nba/scores/json/teams"
-        self.filename = 'teams.json'
+        self.filename = filename
         self.session = requests.Session()
 
     def get_teams(self):
