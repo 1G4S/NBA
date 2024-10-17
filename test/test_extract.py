@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 
-from extract import Extract
+from extract.extract import Extract
 
 
 class TestExtractFunctions(unittest.TestCase):

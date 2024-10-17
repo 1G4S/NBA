@@ -1,11 +1,7 @@
-import json
-
-import requests
-import pandas as pd
-from extract import Extract
 from pprint import pprint
 
-from transform import Transform, StadiumsStrategy, TeamsStrategy, PlayersStrategy
+from transform.transform import Transform
+from transform.strategies.players_strategy import PlayersStrategy
 
 # extract = Extract()
 # pprint(extract.get_players())
