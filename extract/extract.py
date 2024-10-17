@@ -1,114 +1,43 @@
-import json
-
-import requests
-from requests import RequestException
+from extract.strategies.abstract_strategy import ExtractStrategy
 
 
 class Extract:
 
-    def __init__(self, filename='teams.json'):
-        self.API_KEY = "508f3dee654d4f5b8b06b9fe48bbb51e"
-        self.ENDPOINT_MAIN = "https://api.sportsdata.io/v3/"
-        self.endpoint_players = "nba/scores/json/Players"
-        self.endpoint_stadiums = "nba/scores/json/Stadiums"
-        self.endpoint_teams = "nba/scores/json/teams"
-        self.filename = filename
-        self.session = requests.Session()
-
-    def get_teams(self):
+    def __init__(self, strategy: ExtractStrategy):
         """
-        Retrieves team data from the teams endpoint.
+        Initialize the Extract class.
 
-        This function constructs a URL using the base endpoint and the teams-specific
-        endpoint, then sends a GET request with the API key as a parameter. It returns
-        the data in JSON format if request is successful, if not, None will be returned.
-
-        :param:
-            None
-
-        :return:
-            list: The JSON response containing team data.
+        Parameters:
+        strategy (ExtractStrategy): The strategy used for data extraction.
         """
-        url = self.ENDPOINT_MAIN + self.endpoint_teams
-        params = {'key': self.API_KEY}
-        try:
-            response = requests.get(url=url, params=params)
-            response.raise_for_status()
-            return response.json()
-        except RequestException as e:
-            print(f"Error fetching teams data: {e}")
-            return None
+        self._strategy = strategy
 
-    def get_stadiums(self):
+    @property
+    def strategy(self) -> ExtractStrategy:
         """
-        Retrieves stadium data from stadium endpoint.
+        Get the current extraction strategy.
 
-        This function constructs URL using the base endpoint and the stadium-specific
-        endpoint, then sends a GET request with the API key as a parameter. It returns
-        the data in JSON format if the request is successful, if not there will be None returned.
-
-        :param:
-            None
-
-        :return:
-            list: The JSON response containing stadium data.
+        Returns:
+        ExtractStrategy: The current strategy instance used for data extraction.
         """
-        url = self.ENDPOINT_MAIN + self.endpoint_stadiums
-        params = {'key': self.API_KEY}
-        try:
-            response = requests.get(url=url, params=params)
-            response.raise_for_status()
-            return response.json()
-        except RequestException as e:
-            print(f"Error fetching stadium data: {e}")
-            return None
+        return self._strategy
 
-    def get_players(self):
+    @strategy.setter
+    def strategy(self, strategy: ExtractStrategy) -> None:
         """
-        Retrieves players data from players endpoint.
+        Set a new extraction strategy.
 
-        This function constructs the URL by combining the base endpoint, the players-specific
-        endpoint, and the team-specific shortcut for each team. It uses a for loop to send a GET request
-        for each team with the API key as a parameter and collects the players' data.
-        If a request is successful, the JSON response is parsed and added to a list.
-        In case of a request or JSON parsing error,
-        the team entry will have a value of None.
-
-        :param:
-            None
-
-        :return:
-            list: The JSON response containing players data for each team.
+        Parameters:
+        strategy (ExtractStrategy): The new strategy instance for data extraction.
         """
-        all_players = []
-        for team in self.get_list_of_teams():
-            url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
-            params = {'key': self.API_KEY}
-            try:
-                response = self.session.get(url=url, params=params)
-                response.raise_for_status()
-                all_players.extend(response.json())
+        self._strategy = strategy
 
-            except RequestException as e:
-                print(f"Error fetching fata for {team}: {e}")
-                all_players = None
-
-        return all_players
-
-    def get_list_of_teams(self):
+    def retrieve_specific_data(self):
         """
-        Get list of teams from json file.
+        Retrieve specific data using the current extraction strategy.
 
-        This function read data from json file and returns list of teams
-        from NBA, if loading data is successful, if not, None will be returned.
-        :return:
-            list: List of teams from NBA.
+        Returns:
+        The data retrieved by the strategy. The exact type of the data depends
+        on the implementation of the extraction strategy.
         """
-        try:
-            with open(self.filename, 'r') as file:
-                data = json.load(file)
-                return data['Teams']
-        except Exception as e:
-            print(e)
-            return None
-
+        return self._strategy.retrieve_data()
