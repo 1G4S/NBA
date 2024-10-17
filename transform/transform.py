@@ -12,9 +12,9 @@ class Transform:
     4. Create Relational database diagram via Normalization
     """
 
-    def __init__(self, strategy: Strategy):
+    def __init__(self, strategy: Strategy, extract: Extract):
         self._strategy = strategy
-        self.extract = Extract()
+        self.extract = extract
 
     @property
     def strategy(self) -> Strategy:
@@ -29,7 +29,6 @@ class Transform:
         return self.delete_columns(data_in_dataframe)
 
     def delete_columns(self, dataframe):
-        """ """
         return dataframe.drop(columns=self._strategy.list_of_columns_to_remove)
 
     def normalize_to_pandas(self):

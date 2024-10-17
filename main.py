@@ -1,5 +1,7 @@
 from pprint import pprint
 
+from extract.extract import Extract
+from extract.strategies.players_retrieval_strategy import PlayersRetrievalStrategy
 from transform.transform import Transform
 from transform.strategies.players_strategy import PlayersStrategy
 
@@ -16,6 +18,8 @@ from transform.strategies.players_strategy import PlayersStrategy
 
 # stadium_strategy = StadiumsStrategy()
 # team_strategy = TeamsStrategy()
+players_retrieval_strategy = PlayersRetrievalStrategy()
+players_extract = Extract(players_retrieval_strategy)
 player_strategy = PlayersStrategy()
-transform = Transform(player_strategy)
+transform = Transform(player_strategy, players_extract)
 pprint(transform.get_clean_data())

@@ -9,4 +9,4 @@ class TeamsStrategy(Strategy):
                                           'WikipediaWordMarkUrl']
 
     def get_data(self, extract: Extract):
-        return extract.get_teams()
+        return extract.retrieve_specific_data()

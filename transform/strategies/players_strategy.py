@@ -17,4 +17,4 @@ class PlayersStrategy(Strategy):
                                           'XmlTeamPlayerID', 'YahooName', 'YahooPlayerID']
 
     def get_data(self, extract: Extract):
-        return extract.get_players()
+        return extract.retrieve_specific_data()

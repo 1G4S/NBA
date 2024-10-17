@@ -7,4 +7,4 @@ class StadiumsStrategy(Strategy):
         self.list_of_columns_to_remove = ['Address', 'GeoLat', 'GeoLong', 'Zip']
 
     def get_data(self, extract: Extract):
-        return extract.get_stadiums()
+        return extract.retrieve_specific_data()
