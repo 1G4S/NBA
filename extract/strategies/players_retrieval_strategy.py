@@ -9,7 +9,7 @@ class PlayersRetrievalStrategy(ExtractStrategy):
     def __init__(self, filename='teams.json'):
         self.API_KEY = "508f3dee654d4f5b8b06b9fe48bbb51e"
         self.ENDPOINT_MAIN = "https://api.sportsdata.io/v3/"
-        self.endpoint_players = "nba/scores/json/Players"
+        self.ENDPOINT_PLAYERS = "nba/scores/json/Players"
         self.session = requests.Session()
         self.filename = filename
 
@@ -32,7 +32,7 @@ class PlayersRetrievalStrategy(ExtractStrategy):
         """
         all_players = []
         for team in self.get_list_of_teams():
-            url = self.ENDPOINT_MAIN + self.endpoint_players + "/" + team
+            url = self.ENDPOINT_MAIN + self.ENDPOINT_PLAYERS + "/" + team
             params = {'key': self.API_KEY}
             try:
                 response = self.session.get(url=url, params=params)
