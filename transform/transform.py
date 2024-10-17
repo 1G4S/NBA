@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pandas as pd
 from extract.extract import Extract
-from transform_strategy import Strategy
+from transform.strategies.abstract_strategy import Strategy
 
 
 class Transform:

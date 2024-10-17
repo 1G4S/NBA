@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from transform.transform import Transform
-from transform.players_strategy import PlayersStrategy
+from transform.strategies.players_strategy import PlayersStrategy
 
 # extract = Extract()
 # pprint(extract.get_players())

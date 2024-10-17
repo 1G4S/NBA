@@ -1,5 +1,5 @@
 from extract.extract import Extract
-from transform_strategy import Strategy
+from transform.strategies.abstract_strategy import Strategy
 
 
 class StadiumsStrategy(Strategy):
