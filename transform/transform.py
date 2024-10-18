@@ -5,13 +5,6 @@ from transform.strategies.abstract_strategy import Strategy
 
 
 class Transform:
-    """
-    1. Data Cleaning -> remove unnecessary columns
-    2. Split process to 3 endpoints: players, teams, stadiums
-    3. Create general functions for all 3 processes
-    4. Create Relational database diagram via Normalization
-    """
-
     def __init__(self, strategy: Strategy, extract: Extract):
         """
         Initialize the Transform class.
