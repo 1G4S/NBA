@@ -1,84 +1,84 @@
-import unittest
-from unittest.mock import patch, Mock
-
+import pytest
 from extract.extract import Extract
+from extract.strategies.players_retrieval_strategy import PlayersRetrievalStrategy
+from extract.strategies.stadiums_retrieval_strategy import StadiumsRetrievalStrategy
+from extract.strategies.teams_retrieval_strategy import TeamsRetrievalStrategy
 
 
-class TestExtractFunctions(unittest.TestCase):
-    @patch('requests.get')
-    def test_get_teams(self, mock_get):
-        """
-        Tests the get_teams method to ensure it correctly fetches team data from the API.
+def test_get_teams(mocker):
+    """
+    Tests the get_teams method to ensure it correctly fetches team data from the API.
 
-        Mocks the requests.get call to simulate an API response and verifies that the
-        get_teams method returns the expected JSON data without making an actual API call.
+    Mocks the requests.get call to simulate an API response and verifies that the
+    get_teams method returns the expected JSON data without making an actual API call.
+    """
+    mock_response = {'teams': []}
 
-        :param mock_get:
-            A mock object that simulates the requests.get method.
+    mock_get = mocker.patch('requests.get')
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = mock_response
 
-        """
-        mock_response = {'teams': []}
+    teams_strategy = TeamsRetrievalStrategy()
+    extract = Extract(teams_strategy)
+    result = extract.retrieve_specific_data()
 
-        mock_get.return_value = Mock(status_code=200)
-        mock_get.return_value.json.return_value = mock_response
+    assert result == mock_response
 
-        extract = Extract(filename="../teams.json")
-        result = extract.get_teams()
 
-        self.assertEqual(result, mock_response)
+def test_get_stadiums(mocker):
+    """
+    Tests the get_stadiums method to ensure it correctly fetches team data from the API.
 
-    @patch('requests.get')
-    def test_get_stadiums(self, mock_get):
-        """
-        Tests the get_stadiums method to ensure it correctly fetches team data from the API.
+    Mocks the requests.get call to simulate an API response and verifies that the
+    get_stadiums method returns the expected JSON data without making an actual API call.
+    """
+    mock_response = {'stadiums': []}
 
-        Mocks the requests.get call to simulate an API response and verifies that the
-        get_stadiums method returns the expected JSON data without making an actual API call.
+    mock_get = mocker.patch('requests.get')
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = mock_response
 
-        :param mock_get:
-            A mock object that simulates the requests.get method.
-        """
-        mock_response = {'stadiums': []}
+    stadiums_strategy = StadiumsRetrievalStrategy()
+    extract = Extract(stadiums_strategy)
 
-        mock_get.return_value = Mock(status_code=200)
-        mock_get.return_value.json.return_value = mock_response
+    result = extract.retrieve_specific_data()
 
-        extract = Extract()
-        result = extract.get_stadiums()
+    assert result == mock_response
 
-        self.assertEqual(result, mock_response)
 
-    @patch('requests.get')
-    def test_get_players(self, mock_get):
-        """
-        Tests the get_players method to ensure it correctly fetches team data from the API.
+def test_get_players(mocker):
+    """
+    Tests the get_players method to ensure it correctly fetches team data from the API.
 
-        Mocks the requests.get call to simulate an API response and verifies that the
-        get_players method returns the expected data without making an actual API call.
+    Mocks the requests.get call to simulate an API response and verifies that the
+    get_players method returns the expected data without making an actual API call.
+    """
+    mock_response = {'players': []}
 
-        :param mock_get:
-            A mock object that simulates the requests.get method.
-        """
-        mock_response = {'players': []}
+    mock_get = mocker.patch('requests.get')
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = mock_response
 
-        mock_get.return_value = Mock(status_code=200)
-        mock_get.return_value.json.return_value = mock_response
+    players_strategy = PlayersRetrievalStrategy()
+    extract = Extract(players_strategy)
 
-        extract = Extract()
-        result = extract.get_players()
+    result = extract.retrieve_specific_data()
 
-        self.assertEqual(result, mock_response)
+    assert result is not None
+    assert len(result) > 0
 
-    def test_get_list_of_teams(self):
-        """
-        Tests get_list_of_teams function to ensure its correctly fetch teams from json file.
 
-        Check the result that we want with what function returns.
+def test_get_list_of_teams():
+    """
+    Tests get_list_of_teams function to ensure it correctly fetches teams from a JSON file.
 
-        """
-        response = ["WAS", "CHA", "ATL", "MIA", "ORL", "NY", "PHI", "BKN", "BOS", "TOR",
-                    "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC", "POR", "DEN",
-                    "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC", "PHO", "SAC"]
-        extract = Extract()
-        result = extract.get_list_of_teams()
-        self.assertEqual(response, result)
+    Checks if the result from the function matches the expected list of teams.
+    """
+    response = ["WAS", "CHA", "ATL", "MIA", "ORL", "NY", "PHI", "BKN", "BOS", "TOR",
+                "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC", "POR", "DEN",
+                "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC", "PHO", "SAC"]
+
+    players_strategy = PlayersRetrievalStrategy()
+    result = players_strategy.get_list_of_teams()
+
+    assert result == response
