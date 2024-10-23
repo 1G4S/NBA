@@ -21,5 +21,5 @@ from transform.strategies.players_strategy import PlayersStrategy
 players_retrieval_strategy = PlayersRetrievalStrategy()
 players_extract = Extract(players_retrieval_strategy)
 player_strategy = PlayersStrategy()
-transform = Transform(player_strategy, players_extract)
-pprint(transform.get_clean_data())
+transform7 = Transform(player_strategy, players_extract)
+pprint(transform7.get_clean_data())
