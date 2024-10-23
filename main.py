@@ -1,25 +1,16 @@
-from pprint import pprint
+from load.strategies.players_load_strategy import PlayersLoadStrategy
+from load.load import Load
+from load.strategies.stadiums_load_strategy import StadiumsLoadStrategy
+from load.strategies.teams_load_strategy import TeamsLoadStrategy
 
-from extract.extract import Extract
-from extract.strategies.players_retrieval_strategy import PlayersRetrievalStrategy
-from transform.transform import Transform
-from transform.strategies.players_strategy import PlayersStrategy
+players_load_strategy = PlayersLoadStrategy()
+players_load = Load(players_load_strategy)
+players_load.load_prepared_data()
 
-# extract = Extract()
-# pprint(extract.get_players())
-# pprint(extract.get_players()["CHA"])
-# pprint(extract.get_stadiums())
-# pprint(extract.get_teams())
-# pprint(extract.get_players())
-# stadiums = extract.get_stadiums()
-# st = pd.DataFrame(stadiums)
-# transform = Transform()
-# pprint(transform.remove_columns(st, "Address", "GeoLat", "GeoLong", "Zip"))
+teams_load_strategy = TeamsLoadStrategy()
+teams_load = Load(teams_load_strategy)
+teams_load.load_prepared_data()
 
-# stadium_strategy = StadiumsStrategy()
-# team_strategy = TeamsStrategy()
-players_retrieval_strategy = PlayersRetrievalStrategy()
-players_extract = Extract(players_retrieval_strategy)
-player_strategy = PlayersStrategy()
-transform7 = Transform(player_strategy, players_extract)
-pprint(transform7.get_clean_data())
+stadiums_load_strategy = StadiumsLoadStrategy()
+stadiums_load = Load(stadiums_load_strategy)
+stadiums_load.load_prepared_data()
