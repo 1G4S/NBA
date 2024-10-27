@@ -1,4 +1,7 @@
+import os
+
 import requests
+from dotenv import load_dotenv
 from requests import RequestException
 
 from extract.strategies.abstract_strategy import ExtractStrategy
@@ -6,9 +9,10 @@ from extract.strategies.abstract_strategy import ExtractStrategy
 
 class TeamsRetrievalStrategy(ExtractStrategy):
     def __init__(self):
-        self.API_KEY = "508f3dee654d4f5b8b06b9fe48bbb51e"
-        self.ENDPOINT_MAIN = "https://api.sportsdata.io/v3/"
-        self.ENDPOINT_TEAMS = "nba/scores/json/teams"
+        load_dotenv()
+        self.API_KEY = os.getenv('API_KEY')
+        self.ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
+        self.ENDPOINT_TEAMS = os.getenv('ENDPOINT_TEAMS')
 
     def retrieve_data(self):
         """
