@@ -1,8 +1,8 @@
 from extract.extract import Extract
-from transform.strategies.abstract_transform_strategy import Strategy
+from transform.strategies.abstract_transform_strategy import TransformStrategy
 
 
-class TeamsStrategy(Strategy):
+class TeamsTransformStrategy(TransformStrategy):
     def __init__(self, raw_data):
         """
         :param raw_data: The raw input data that needs processing. This could be in various formats,

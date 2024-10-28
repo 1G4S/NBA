@@ -1,7 +1,7 @@
-from transform.strategies.abstract_transform_strategy import Strategy
+from transform.strategies.abstract_transform_strategy import TransformStrategy
 
 
-class PlayersStrategy(Strategy):
+class PlayersTransformStrategy(TransformStrategy):
     def __init__(self, raw_data):
         """
         :param raw_data: The dataset that contains player information which will be cleaned by removing unnecessary

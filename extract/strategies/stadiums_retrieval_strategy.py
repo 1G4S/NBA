@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 from requests import RequestException
 
-from extract.strategies.abstract_strategy import ExtractStrategy
+from extract.strategies.abstract_extract_strategy import ExtractStrategy
 
 
 class StadiumsRetrievalStrategy(ExtractStrategy):

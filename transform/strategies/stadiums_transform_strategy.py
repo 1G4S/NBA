@@ -1,7 +1,7 @@
-from transform.strategies.abstract_transform_strategy import Strategy
+from transform.strategies.abstract_transform_strategy import TransformStrategy
 
 
-class StadiumsStrategy(Strategy):
+class StadiumsTransformStrategy(TransformStrategy):
     def __init__(self, raw_data):
         """
         :param raw_data: The initial data that needs to be processed, typically in a tabular or dataframe format.
