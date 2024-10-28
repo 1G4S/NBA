@@ -10,9 +10,9 @@ from load.strategies.players_load_strategy import PlayersLoadStrategy
 from load.load import Load
 from load.strategies.stadiums_load_strategy import StadiumsLoadStrategy
 from load.strategies.teams_load_strategy import TeamsLoadStrategy
-from transform.strategies.players_strategy import PlayersStrategy
-from transform.strategies.stadiums_strategy import StadiumsStrategy
-from transform.strategies.teams_strategy import TeamsStrategy
+from transform.strategies.players_transform_strategy import PlayersStrategy
+from transform.strategies.stadiums_transform_strategy import StadiumsStrategy
+from transform.strategies.teams_transform_strategy import TeamsStrategy
 from transform.transform import Transform
 import json
 
@@ -43,9 +43,10 @@ def players():
     players_extract_strategy = PlayersRetrievalStrategy(api_key=API_KEY, endpoint_main=ENDPOINT_MAIN,
                                                         endpoint_players=ENDPOINT_PLAYERS)
     players_extract = Extract(players_extract_strategy)
-    players_json_message = players_extract.retrieve_specific_data()
-    with open('data/players.json', 'w') as f:
-        json.dump(players_json_message, f)
+    # players_json_message = players_extract.retrieve_specific_data()
+    # with open('data/players.json', 'w') as f:
+    #     json.dump(players_json_message, f)
+    players_raw_data = players_extract.retrieve_specific_data()
     # ----------------END OF EXTRACT--------------------#
     # ----------------START TRANSFORM-------------------#
     players_transform_strategy = PlayersStrategy()
