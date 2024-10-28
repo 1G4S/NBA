@@ -8,11 +8,10 @@ from extract.strategies.abstract_strategy import ExtractStrategy
 
 
 class StadiumsRetrievalStrategy(ExtractStrategy):
-    def __init__(self):
-        load_dotenv()
-        self.API_KEY = os.getenv('API_KEY')
-        self.ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
-        self.ENDPOINT_STADIUMS = os.getenv('ENDPOINT_STADIUMS')
+    def __init__(self, api_key, endpoint_main, endpoint_stadiums):
+        self.API_KEY = api_key
+        self.ENDPOINT_MAIN = endpoint_main
+        self.ENDPOINT_STADIUMS = endpoint_stadiums
 
     def retrieve_data(self):
         """
