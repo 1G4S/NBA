@@ -3,16 +3,14 @@ import os
 import requests
 import json
 from requests import RequestException
-from dotenv import load_dotenv
-from extract.strategies.abstract_strategy import ExtractStrategy
+from extract.strategies.abstract_extract_strategy import ExtractStrategy
 
 
 class PlayersRetrievalStrategy(ExtractStrategy):
-    def __init__(self, filename='teams.json'):
-        load_dotenv()
-        self.API_KEY = os.getenv('API_KEY')
-        self.ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
-        self.ENDPOINT_PLAYERS = os.getenv('ENDPOINT_PLAYERS')
+    def __init__(self, api_key, endpoint_main, endpoint_players, filename='teams.json'):
+        self.API_KEY = api_key
+        self.ENDPOINT_MAIN = endpoint_main
+        self.ENDPOINT_PLAYERS = endpoint_players
         self.session = requests.Session()
         self.filename = filename
 

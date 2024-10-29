@@ -4,15 +4,14 @@ import requests
 from dotenv import load_dotenv
 from requests import RequestException
 
-from extract.strategies.abstract_strategy import ExtractStrategy
+from extract.strategies.abstract_extract_strategy import ExtractStrategy
 
 
 class TeamsRetrievalStrategy(ExtractStrategy):
-    def __init__(self):
-        load_dotenv()
-        self.API_KEY = os.getenv('API_KEY')
-        self.ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
-        self.ENDPOINT_TEAMS = os.getenv('ENDPOINT_TEAMS')
+    def __init__(self, api_key, endpoint_main, endpoint_teams):
+        self.API_KEY = api_key
+        self.ENDPOINT_MAIN = endpoint_main
+        self.ENDPOINT_TEAMS = endpoint_teams
 
     def retrieve_data(self):
         """
