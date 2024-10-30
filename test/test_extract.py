@@ -1,8 +1,20 @@
+import os
+
 import pytest
+from dotenv import load_dotenv
+
 from extract.extract import Extract
 from extract.strategies.players_retrieval_strategy import PlayersRetrievalStrategy
 from extract.strategies.stadiums_retrieval_strategy import StadiumsRetrievalStrategy
 from extract.strategies.teams_retrieval_strategy import TeamsRetrievalStrategy
+
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
+ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
+ENDPOINT_PLAYERS = os.getenv('ENDPOINT_PLAYERS')
+ENDPOINT_TEAMS = os.getenv('ENDPOINT_TEAMS')
+ENDPOINT_STADIUMS = os.getenv('ENDPOINT_STADIUMS')
+DB_CONNECTION = os.getenv('DB_CONNECTION')
 
 
 def test_get_teams(mocker):
@@ -18,7 +30,7 @@ def test_get_teams(mocker):
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = mock_response
 
-    teams_strategy = TeamsRetrievalStrategy()
+    teams_strategy = TeamsRetrievalStrategy(API_KEY, ENDPOINT_MAIN, ENDPOINT_TEAMS)
     extract = Extract(teams_strategy)
     result = extract.retrieve_specific_data()
 
@@ -38,7 +50,7 @@ def test_get_stadiums(mocker):
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = mock_response
 
-    stadiums_strategy = StadiumsRetrievalStrategy()
+    stadiums_strategy = StadiumsRetrievalStrategy(API_KEY, ENDPOINT_MAIN, ENDPOINT_STADIUMS)
     extract = Extract(stadiums_strategy)
 
     result = extract.retrieve_specific_data()
@@ -59,7 +71,7 @@ def test_get_players(mocker):
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = mock_response
 
-    players_strategy = PlayersRetrievalStrategy()
+    players_strategy = PlayersRetrievalStrategy(API_KEY, ENDPOINT_MAIN, ENDPOINT_PLAYERS)
     extract = Extract(players_strategy)
 
     result = extract.retrieve_specific_data()
@@ -78,7 +90,7 @@ def test_get_list_of_teams():
                 "CHI", "CLE", "IND", "DET", "MIL", "MIN", "UTA", "OKC", "POR", "DEN",
                 "MEM", "HOU", "NO", "SA", "DAL", "GS", "LAL", "LAC", "PHO", "SAC"]
 
-    players_strategy = PlayersRetrievalStrategy()
+    players_strategy = PlayersRetrievalStrategy(API_KEY, ENDPOINT_MAIN, ENDPOINT_PLAYERS)
     result = players_strategy.get_list_of_teams()
 
     assert result == response

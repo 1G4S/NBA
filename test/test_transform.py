@@ -2,60 +2,53 @@ import pytest
 import pandas as pd
 from unittest.mock import Mock
 from extract.extract import Extract
-from transform.strategies.abstract_strategy import Strategy
-from transform.strategies.players_strategy import PlayersStrategy
+from transform.strategies.abstract_transform_strategy import TransformStrategy
+from transform.strategies.players_transform_strategy import PlayersTransformStrategy
 from transform.transform import Transform
 
 
 def test_transform_initialization():
     """
-    Tests the initialization of the Transform class by verifying that
-    the given strategy and extract parameters are correctly assigned to
-    the transform instance.
+    Tests the initialization of the Transform class with a mock strategy.
+
+    This test:
+    - Creates a mock object for the PlayersTransformStrategy.
+    - Initializes the Transform class with the mock strategy.
+    - Asserts that the strategy attribute of the transform instance is correctly set to the mock strategy.
 
     :return: None
     """
-    mock_strategy = Mock(spec=Strategy)
-    mock_extract = Mock(spec=Extract)
+    mock_strategy = Mock(spec=PlayersTransformStrategy)
 
-    transform = Transform(mock_strategy, mock_extract)
+    transform = Transform(mock_strategy)
     assert transform.strategy == mock_strategy
-    assert transform.extract == mock_extract
 
 
 def test_transform_getter_strategy():
     """
-    Unit test for the Transform class to verify the getter method for the strategy attribute.
+    Tests the behavior of the Transform class's getter for the strategy attribute.
 
     :return: None
     """
-    mock_strategy = Mock(spec=Strategy)
-    mock_extract = Mock(spec=Extract)
+    mock_strategy = Mock(spec=PlayersTransformStrategy)
 
-    transform = Transform(mock_strategy, mock_extract)
+    transform = Transform(mock_strategy)
     assert transform.strategy == mock_strategy
 
 
 def test_transform_setter_strategy():
     """
-    Tests the setter method for the strategy attribute in the Transform class.
+    Tests the setter method for the strategy used in the Transform class.
 
-    This test checks whether the strategy attribute of an instance of the
-    Transform class can be successfully updated to a new strategy.
-
-    It uses the Mock library to create mock objects for the Strategy,
-    Extract, and PlayersStrategy classes. A Transform object is instantiated
-    with the mock strategy and extract objects. The strategy attribute is then
-    set to a new mock strategy. The test asserts that the strategy has been
-    successfully updated.
+    This function creates mock objects for both the initial and new strategy.
+    It verifies that the new strategy is correctly set and retrieved.
 
     :return: None
     """
-    mock_strategy = Mock(spec=Strategy)
-    mock_extract = Mock(spec=Extract)
-    mock_new_strategy = Mock(spec=PlayersStrategy)
+    mock_strategy = Mock(spec=TransformStrategy)
+    mock_new_strategy = Mock(spec=PlayersTransformStrategy)
 
-    transform = Transform(mock_strategy, mock_extract)
+    transform = Transform(mock_strategy)
     transform.strategy = mock_new_strategy
 
     assert transform.strategy == mock_new_strategy
@@ -63,10 +56,7 @@ def test_transform_setter_strategy():
 
 def test_delete_columns():
     """
-    Tests the delete_columns function of the Transform class.
-
-    This test verifies that the delete_columns function correctly removes the specified columns from
-    the input DataFrame.
+    Tests the deletion of specified columns from a DataFrame using a mock strategy.
 
     :return: None
     """
@@ -79,11 +69,10 @@ def test_delete_columns():
     after_deletion = pd.DataFrame({
         'c2': [4, 5, 6]
     })
-    mock_strategy = Mock(spec=PlayersStrategy)
+    mock_strategy = Mock(spec=PlayersTransformStrategy)
     mock_strategy.list_of_columns_to_remove = ['c1', 'c3']
-    mock_extract = Mock(spec=Extract)
 
-    transform = Transform(mock_strategy, mock_extract)
+    transform = Transform(mock_strategy)
     result = transform.delete_columns(before_deletion)
 
     assert result.equals(after_deletion)
@@ -91,9 +80,8 @@ def test_delete_columns():
 
 def test_normalize_to_pandas():
     """
-    Tests the normalize_to_pandas function of the Transform class.
-
-    This test verifies that the normalize_to_pandas function correctly turn mock_data into a DataFrame.
+    Tests the `normalize_to_pandas` method of the `Transform` class using mock data.
+    The test checks if the returned result from the method is an instance of `pd.DataFrame`.
 
     :return: None
     """
@@ -102,20 +90,18 @@ def test_normalize_to_pandas():
         'c2': [4, 5, 6],
         'c3': [7, 8, 9]
     }
-    mock_extract = Mock(spec=Extract)
-    mock_extract.retrieve_specific_data.return_value = mock_data
 
-    players_strategy = PlayersStrategy()
-    transform = Transform(players_strategy, mock_extract)
+    players_strategy = PlayersTransformStrategy(mock_data)
+    transform = Transform(players_strategy)
     result = transform.normalize_to_pandas()
     assert isinstance(result, pd.DataFrame)
 
 
 def test_get_clean_data():
     """
-    Function to test the `get_clean_data` method of the `Transform` class.
+    Tests the `get_clean_data` method of the `Transform` class to ensure that it correctly removes specified columns from the input data.
 
-    :return: Assertion if the actual result matches the expected dataframe after deletion of specified columns.
+    :return: None
     """
     before_deletion = {
         'c1': [1, 2, 3],
@@ -125,13 +111,9 @@ def test_get_clean_data():
     after_deletion = pd.DataFrame({
         'c2': [4, 5, 6]
     })
-
-    mock_strategy = Mock(spec=PlayersStrategy)
-    mock_strategy.list_of_columns_to_remove = ['c1', 'c3']
-    mock_strategy.get_data.return_value = before_deletion
-    mock_extract = Mock(spec=Extract)
-
-    transform = Transform(mock_strategy, mock_extract)
+    players_transform_strategy = PlayersTransformStrategy(before_deletion)
+    players_transform_strategy.list_of_columns_to_remove = ['c1', 'c3']
+    transform = Transform(players_transform_strategy)
     result = transform.get_clean_data()
 
     assert result.equals(after_deletion)

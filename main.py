@@ -101,6 +101,6 @@ def stadiums():
 
 
 if __name__ == "__main__":
-    players()
+    # players()
     teams()
-    stadiums()
+    # stadiums()
