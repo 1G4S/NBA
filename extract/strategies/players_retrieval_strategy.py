@@ -1,5 +1,3 @@
-import os
-
 import requests
 import json
 from requests import RequestException
