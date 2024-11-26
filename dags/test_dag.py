@@ -32,6 +32,10 @@ players_extract_strategy = PlayersRetrievalStrategy(
 )
 players_extract = Extract(players_extract_strategy)
 
+
+players_transform_strategy = PlayersTransformStrategy(players_raw_data)
+players_transform = Transform(players_transform_strategy)
+players_prepared_data = players_transform.get_clean_data()
 """
  * * * * *
  
@@ -46,7 +50,7 @@ players_extract = Extract(players_extract_strategy)
  
 """
 
-default_args = {
+default_args1 = {
     'owner': 'admin',
     'start_date': dt.datetime.date(),
     'retries': 0,
@@ -54,16 +58,16 @@ default_args = {
 
 with DAG(
     dag_id='test_dag',
-    default_args=default_args,
+    default_args=default_args1,
     schedule_interval='@daily'
 ) as dag:
 
     extract_task = PythonOperator(
         task_id='extract',
         python_callable=players_extract.retrieve_specific_data()
-
     )
 
+    raw_data = xcom_p
 
 
 
