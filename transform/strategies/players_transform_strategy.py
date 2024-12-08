@@ -1,8 +1,8 @@
 from transform.strategies.abstract_transform_strategy import TransformStrategy
-
+import pandas as pd
 
 class PlayersTransformStrategy(TransformStrategy):
-    def __init__(self, raw_data):
+    def __init__(self, path_to_data):
         """
         :param raw_data: The dataset that contains player information which will be cleaned by removing unnecessary
         columns.
@@ -18,7 +18,7 @@ class PlayersTransformStrategy(TransformStrategy):
                                           'UsaTodayHeadshotNoBackgroundUpdated', 'UsaTodayHeadshotNoBackgroundUrl',
                                           'UsaTodayHeadshotUpdated', 'UsaTodayHeadshotUrl', 'UsaTodayPlayerID',
                                           'XmlTeamPlayerID', 'YahooName', 'YahooPlayerID']
-        self.raw_data = raw_data
+        self.path_to_data = path_to_data
 
     def get_data(self):
         """
@@ -26,4 +26,5 @@ class PlayersTransformStrategy(TransformStrategy):
 
         :return: The data stored in the instance variable.
         """
-        return self.raw_data
+
+        return pd.read_json(self.path_to_data)

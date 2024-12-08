@@ -1,16 +1,17 @@
 from transform.strategies.abstract_transform_strategy import TransformStrategy
+import pandas as pd
 
 
 class StadiumsTransformStrategy(TransformStrategy):
-    def __init__(self, raw_data):
+    def __init__(self, path_to_data):
         """
-        :param raw_data: The initial data that needs to be processed, typically in a tabular or dataframe format.
+        :param path_to_data: The initial data that needs to be processed, typically in a tabular or dataframe format.
         """
         self.list_of_columns_to_remove = ['Address', 'GeoLat', 'GeoLong', 'Zip']
-        self.raw_data = raw_data
+        self.path_to_data = path_to_data
 
     def get_data(self):
         """
-        :return: The raw data stored within the object.
+        :return: Reading raw data stored in json file.
         """
-        return self.raw_data
+        return pd.read_json(self.path_to_data)

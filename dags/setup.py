@@ -1,7 +1,3 @@
-import os
-
-from dotenv import load_dotenv
-
 from extract.extract import Extract
 from extract.strategies.players_retrieval_strategy import PlayersRetrievalStrategy
 from extract.strategies.stadiums_retrieval_strategy import StadiumsRetrievalStrategy
@@ -14,15 +10,10 @@ from transform.strategies.players_transform_strategy import PlayersTransformStra
 from transform.strategies.stadiums_transform_strategy import StadiumsTransformStrategy
 from transform.strategies.teams_transform_strategy import TeamsTransformStrategy
 from transform.transform import Transform
-import json
 
-load_dotenv()
-API_KEY = os.getenv('API_KEY')
-ENDPOINT_MAIN = os.getenv('ENDPOINT_MAIN')
-ENDPOINT_PLAYERS = os.getenv('ENDPOINT_PLAYERS')
-ENDPOINT_TEAMS = os.getenv('ENDPOINT_TEAMS')
-ENDPOINT_STADIUMS = os.getenv('ENDPOINT_STADIUMS')
-DB_CONNECTION = os.getenv('DB_CONNECTION')
+
+
+
 
 
 def players():
@@ -30,7 +21,7 @@ def players():
     players_extract_strategy = PlayersRetrievalStrategy(api_key=API_KEY, endpoint_main=ENDPOINT_MAIN,
                                                         endpoint_players=ENDPOINT_PLAYERS)
     players_extract = Extract(players_extract_strategy)
-    # players_json_message = players_extract.retrieve_specific_data()
+    players_json_message = players_extract.retrieve_specific_data()
     # with open('data/players.json', 'w') as f:
     #     json.dump(players_json_message, f)
     players_raw_data = players_extract.retrieve_specific_data()
@@ -98,10 +89,3 @@ def stadiums():
     stadiums_load = Load(stadiums_load_strategy)
     stadiums_load.load_prepared_data()
     # -----------------END LOAD----------------------#
-
-
-if __name__ == "__main__":
-    players()
-    # teams()
-    # print(os.getcwd())
-    # stadiums()

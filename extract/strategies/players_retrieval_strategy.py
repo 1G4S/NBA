@@ -2,15 +2,20 @@ import requests
 import json
 from requests import RequestException
 from extract.strategies.abstract_extract_strategy import ExtractStrategy
+import os
 
 
 class PlayersRetrievalStrategy(ExtractStrategy):
-    def __init__(self, api_key, endpoint_main, endpoint_players, filename='teams.json'):
+    def __init__(self, api_key, endpoint_main, endpoint_players, filename='list_of_teams.json'):
         self.API_KEY = api_key
         self.ENDPOINT_MAIN = endpoint_main
         self.ENDPOINT_PLAYERS = endpoint_players
         self.session = requests.Session()
-        self.filename = filename
+        self.file_path = f'{os.getcwd()}/dags/{filename}'
+        self.dest_path = f'{os.getcwd()}/dags/data/player.json'
+
+    def get_dest_path(self):
+        return self.dest_path
 
     def retrieve_data(self):
         """
@@ -53,10 +58,10 @@ class PlayersRetrievalStrategy(ExtractStrategy):
         :return:
             list: List of teams from NBA.
         """
-        try:
-            with open(self.filename, 'r') as file:
-                data = json.load(file)
-                return data['Teams']
-        except Exception as e:
-            print(e)
-            return None
+        # try:
+        with open(self.file_path, 'r') as file:
+            data = json.load(file)
+            return data['Teams']
+        # except Exception as e:
+        #     print(e)
+        #     return None

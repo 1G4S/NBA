@@ -29,7 +29,7 @@ class Transform:
         """
         :return: A cleaned pandas DataFrame with unnecessary columns removed
         """
-        data_in_dataframe = self.normalize_to_pandas()
+        data_in_dataframe = self.read_data()
         return self.delete_columns(data_in_dataframe)
 
     def delete_columns(self, dataframe):
@@ -39,11 +39,8 @@ class Transform:
         """
         return dataframe.drop(columns=self._strategy.list_of_columns_to_remove)
 
-    def normalize_to_pandas(self):
+    def read_data(self):
         """
-        Transforms raw data from the strategy to a pandas DataFrame.
-
-        :return: A pandas DataFrame containing the strategy's raw data.
+        :return: A pandas DataFrame with unnecessary columns removed
         """
-        data = self._strategy.raw_data
-        return pd.DataFrame(data)
+        return self._strategy.get_data()

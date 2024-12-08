@@ -1,5 +1,5 @@
 from extract.strategies.abstract_extract_strategy import ExtractStrategy
-
+import json
 
 class Extract:
 
@@ -41,3 +41,9 @@ class Extract:
         on the implementation of the extraction strategy.
         """
         return self._strategy.retrieve_data()
+
+    def save_data(self):
+        with open(f'{self._strategy.get_dest_path()}', 'w') as f:
+            json.dump(self.retrieve_specific_data(), f)
+
+        return self._strategy.get_dest_path()

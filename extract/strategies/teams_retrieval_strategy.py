@@ -12,6 +12,10 @@ class TeamsRetrievalStrategy(ExtractStrategy):
         self.API_KEY = api_key
         self.ENDPOINT_MAIN = endpoint_main
         self.ENDPOINT_TEAMS = endpoint_teams
+        self.dest_path = f'{os.getcwd()}/dags/data/teams.json'
+
+    def get_dest_path(self):
+        return self.dest_path
 
     def retrieve_data(self):
         """
